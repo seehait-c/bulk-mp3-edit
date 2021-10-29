@@ -1,0 +1,41 @@
+before:
+  hooks:
+    - go mod tidy
+    - go generate ./...
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+universal_binaries:
+  - replace: true
+archives:
+  - replacements:
+      darwin: Darwin
+      linux: Linux
+      windows: Windows
+      386: i386
+      amd64: x86_64
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+brews:
+  - tap:
+      owner: seehait-c
+      name: homebrew-bulk-mp3-edit
+    commit_author:
+      name: "Seehait Chockthanyawat"
+      email: seehait.c@gmail.com
+    folder: Formula
+    homepage: "https://github.com/seehait-c/bulk-mp3-edit"
+    description: "Edit MP3 file's metadata in a bulk manner."
+    license: "MIT"
